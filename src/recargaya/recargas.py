@@ -9,4 +9,9 @@ def calcular_recarga(monto, premium=False):
     else:
         bono = 0
 
-    return monto * (1 + bono)
+    total = monto * (1 + bono)
+
+    if premium:
+        total *= 1.05
+
+    return round(total, 2)
