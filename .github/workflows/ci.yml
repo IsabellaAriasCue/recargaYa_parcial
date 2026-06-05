@@ -20,8 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install pytest behave fastapi uvicorn httpx bandit
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=src" >> $GITHUB_ENV
 
       - name: Run unit tests (pytest)
         run: |
@@ -29,7 +32,6 @@ jobs:
 
       - name: Run BDD tests (behave)
         run: |
-          export PYTHONPATH=src
           behave
 
       - name: Security check (Bandit)
