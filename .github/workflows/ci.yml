@@ -1,0 +1,37 @@
+name: CI RecargaYa
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest behave fastapi uvicorn httpx bandit
+
+      - name: Run unit tests (pytest)
+        run: |
+          pytest
+
+      - name: Run BDD tests (behave)
+        run: |
+          export PYTHONPATH=src
+          behave
+
+      - name: Security check (Bandit)
+        run: |
+          bandit -r src
